@@ -81,7 +81,6 @@ export default {
             })
         },
         IsActive(val) {
-            console.log(!val.DeletedDate)
             return !val.DeletedDate
         },
         Confirmation(user) {

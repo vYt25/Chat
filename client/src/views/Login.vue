@@ -4,11 +4,9 @@
         <v-card class="mx-auto elevation-20 " style="border-radius: 10px; background-color:white;" width="700px">
             <v-row no-gutters>
                 <v-col cols="12" md="6" sm="6" style="background-color:white; border-radius: 10px 0px 0px 10px; border-bottom: 20px solid white; border-top: 20px solid white;">
-                    <!-- <v-row no-gutters>-->
                     <v-col class="mt-10 ">
                         <v-img src="img/logo3.png" alt="Import Process"></v-img>
                     </v-col>
-                    <!--  </v-row> -->
 
                     <div style="width: 100%; text-align:center; font-style: italic; text-decoration: underline;">
                         Your messaging buddy!
@@ -23,20 +21,28 @@
                         <v-text-field type="password" label="Password" prepend-icon="mdi-lock" :error="error" :error-messages="errorMsg" v-model="user.Password" @keyup.enter="login()"></v-text-field>
                     </v-card-text>
                     <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn raised block :disabled="!user.Username || !user.Password" @click="login()" color="#81cfcf" :loading="loading">Submit</v-btn>
+                        <v-row no-gutters>
+                            <v-btn raised block :disabled="!user.Username || !user.Password" @click="login()" color="#81cfcf" :loading="loading">Submit</v-btn>
+                        <v-btn raised block @click="registerDialog = true">Register</v-btn>
+                        </v-row>
+                        
                     </v-card-actions>
                 </v-col>
             </v-row>
         </v-card>
     </v-layout>
+    <Register :dialog="registerDialog" @close="registerDialog = false" />
 </v-container>
 </template>
 
 <script>
+
+import Register from '../components/RegisterDialog.vue'
 export default {
+    components: {Register},
     data() {
         return {
+            registerDialog: false,
             error: false,
             errorMsg: null,
             user: {},

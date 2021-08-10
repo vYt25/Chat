@@ -4,40 +4,42 @@ const cors = require('cors')
 
 const router = express.Router();
 
-const Chat = require('knex')({
-    client: 'mysql',
-    connection: {
-        host: 'localhost',
-        user: 'root',
-        password: 'admin',
-        database: 'chat'
-    }
-});
+const Chat = require('../connections');
 
-let timestamp = new Date().toISOString().split('T')
-timestamp[1] = timestamp[1].split('.')[0]
-const now = timestamp.join(' ')
+const now = require('../timestamp')
 
-router.use(cors()) //Cross-Origin Resource Sharing (CORS)
+
+router.use(cors())
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }))
 
-//use router instead of app
+router.post('/', (req, res) => {
+    Chat.table('users').select('*').where('Username', req.body.Username)
+        .then(data => {
+            if (data.length > 0) {
+                res.status(500).send({ errorMsg: 'Username not available' })
+            } else {
+                Chat.table('users').insert(req.body).then(() => {
+                    res.status(200).json({})
+                })
+            }
+        })
+})
 
-router.post('/details', (req, res) => {
-    Chat.select(
-        'A.UserID',
-        'A.FirstName',
-        'A.MiddleName',
-        'A.LastName',
-        'A.Gender',
-        'B.GenderName',
-        'A.DeletedDate'
-    ).from('users as A')
-        .join('genders as B', 'B.GenderID', '=', 'A.Gender')
-        .where('UserID', 'IN', req.body)
+
+router.get('/', (req, res) => {
+    Chat.raw(`SELECT A.UserID,A.FirstName,A.MiddleName,A.LastName,A.Gender,B.GenderName,A.DeletedDate,false as Online,null as Socket FROM users as A JOIN genders as B on B.GenderID = A.Gender`)
         .then(response => {
-            res.send(response)
+            res.send(response[0])
+        }).catch(err => {
+            console.log(err)
+        })
+})
+
+router.get('/details', (req, res) => {
+    Chat.raw(`SELECT A.UserID,A.FirstName,A.MiddleName,A.LastName,A.Gender,B.GenderName,A.DeletedDate,false as Online,null as Socket FROM users as A JOIN genders as B on B.GenderID = A.Gender WHERE A.UserID != ${req.query.userid} AND A.DeletedDate IS NULL`)
+        .then(response => {
+            res.send(response[0])
         }).catch(err => {
             console.log(err)
         })
@@ -48,6 +50,11 @@ router.patch('/', (req, res) => {
     let values = req.body
     delete values.UserID
     delete values.GenderName
+    delete values.GenderID
+    delete values.Online
+    delete values.Socket
+    delete values.CreatedDate
+    values.UpdatedDate = now
     Chat.table('users')
         .where("UserID", UserID)
         .update(values)

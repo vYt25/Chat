@@ -6,14 +6,16 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "socket": "node socket-server/server.js"
+    "socket": "nodemon socket-server.js"
   },
   "dependencies": {
     "@mdi/font": "^5.9.55",
     "@pusher/chatkit-client": "^1.14.1",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "izitoast": "^1.4.0",
     "md5": "^2.3.0",
+    "nodemon": "^2.0.12",
     "pusher": "^5.0.0",
     "pusher-js": "^7.0.3",
     "socket.io": "^2.3.0",

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 07, 2021 at 03:30 PM
+-- Generation Time: Aug 10, 2021 at 06:56 AM
 -- Server version: 8.0.17
 -- PHP Version: 7.3.9
 
@@ -47,11 +47,37 @@ INSERT INTO `genders` (`GenderID`, `GenderName`, `CreatedDate`, `UpdatedDate`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `messages`
+--
+
+CREATE TABLE `messages` (
+  `id` int(11) NOT NULL,
+  `Sender` tinyint(4) NOT NULL,
+  `Reciever` tinyint(4) NOT NULL,
+  `Message` longtext NOT NULL,
+  `SeenFlg` tinyint(4) DEFAULT NULL,
+  `CreatedDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `UpdatedDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `DeletedDate` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=ucs2;
+
+--
+-- Dumping data for table `messages`
+--
+
+INSERT INTO `messages` (`id`, `Sender`, `Reciever`, `Message`, `SeenFlg`, `DeletedDate`) VALUES
+(1, 1, 2, 'test', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
   `UserID` int(11) NOT NULL,
+  `IsAdmin` tinyint(4) DEFAULT NULL,
+  `Username` varchar(150) NOT NULL,
   `Password` varchar(255) NOT NULL,
   `FirstName` varchar(50) NOT NULL,
   `MiddleName` varchar(50) CHARACTER SET ucs2 COLLATE ucs2_general_ci DEFAULT NULL,
@@ -66,9 +92,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`UserID`, `Password`, `FirstName`, `MiddleName`, `LastName`, `Gender`, `CreatedDate`, `UpdatedDate`, `DeletedDate`) VALUES
-(1, 'dcddb75469b4b4875094e14561e573d8 ', 'Darwin John', 'Garcia', 'Suck', 1, '2021-08-06 16:00:00', '2021-08-06 18:47:06', NULL),
-(2, 'dcddb75469b4b4875094e14561e573d8 ', 'Pedro', 'Pusod', 'Penduko', 2, '2021-08-06 16:00:00', '2021-08-06 20:01:20', NULL);
+INSERT INTO `users` (`UserID`, `IsAdmin`, `Username`, `Password`, `FirstName`, `MiddleName`, `LastName`, `Gender`, `CreatedDate`, `UpdatedDate`, `DeletedDate`) VALUES
+(1, 1, 'test', '098f6bcd4621d373cade4e832627b4f6', 'Darwin John', 'Garcia', 'Suck', 1, '2021-08-06 16:00:00', '2021-08-09 22:17:37', NULL),
+(2, NULL, 'test1', '098f6bcd4621d373cade4e832627b4f6', 'Pedro', 'Pusod', 'Penduko', 2, '2021-08-06 16:00:00', '2021-08-09 22:17:37', NULL);
 
 --
 -- Indexes for dumped tables
@@ -79,6 +105,12 @@ INSERT INTO `users` (`UserID`, `Password`, `FirstName`, `MiddleName`, `LastName`
 --
 ALTER TABLE `genders`
   ADD PRIMARY KEY (`GenderID`);
+
+--
+-- Indexes for table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `users`
@@ -97,10 +129,16 @@ ALTER TABLE `genders`
   MODIFY `GenderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

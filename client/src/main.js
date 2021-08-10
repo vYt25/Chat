@@ -5,13 +5,11 @@ import store from './store'
 import Vuetify from 'vuetify'
 import io from 'socket.io-client';
 import VueIziToast from 'vue-izitoast';
+import 'izitoast/dist/css/iziToast.css';
 import 'vuetify/dist/vuetify.min.css'
 import '@mdi/font/css/materialdesignicons.css'
 
-const pad = (val) => {
-  if (val)
-    return val.toString().padStart(5, '0')
-}
+const pad = (val) => (val ? val.toString().padStart(5, '0') : null);
 
 const socket = io(`${window.location.protocol}//${window.location.hostname}:9000`);
 
@@ -30,7 +28,7 @@ Vue.prototype.$pad = pad
 Vue.prototype.$socket = socket
 Vue.prototype.$md5 = require('md5')
 Vue.prototype.$bus = new Vue;
-Vue.prototype.$toast = VueIziToast;
+Vue.prototype.$iziToast = VueIziToast;
 
 
 Vue.prototype.$now = timestamp

@@ -9,17 +9,13 @@
                     </v-avatar>
                 </v-list-item-title>
                 <v-list-item-subtitle class="my-3 text-center">
-
-                    <span style="font-weight:bold;">{{userInfo.FirstName}} {{userInfo.LastName}}</span><br>
-                    <!-- <span style="font-weight:bold;">{{`${$store.state.user.LastName}, ${$store.state.user.FirstName} ${$store.state.user.MiddleName.length > 0 ? $store.state.user.MiddleName.substr(0,1).toUpperCase()+'.' : null }`}}</span><br>
-                    <span style="font-weight:bold;">{{$store.state.user.SectionsName}}</span><br>
-                    <span style="font-weight:bold;">{{$store.state.user.TeamName}}</span> -->
+                    <span style="font-weight:bold;">{{userInfo.FirstName}} {{userInfo.LastName}} <v-btn icon x-small @click="Edit()"><v-icon small>mdi-pencil</v-icon></v-btn></span>
                 </v-list-item-subtitle>
             </v-list-item-content>
         </v-list-item>
         <v-divider></v-divider>
         <v-list dense nav>
-            <template v-for="item in items">
+            <template v-for="item in filteredItems">
                 <v-list-item v-if="!item.sub" :key="item.title" link :to="item.to" color="#208895">
                     <template>
                         <v-list-item-icon>
@@ -59,15 +55,20 @@
             </div>
         </template>
     </v-navigation-drawer>
-
+    <UpdateAccount :dialog="accountDialog" :obj.sync="updateObj" @close="accountDialog = false"/>
 </div>
 </template>
 
 <script>
+import UpdateAccount from './UpdateAccountDialog.vue'
+
 export default {
+    components: {UpdateAccount},
     props: ['nav'],
     data() {
         return {
+            accountDialog: false,
+            updateObj: {},
             test: [],
             clickIncrement: 0,
             right: null,
@@ -80,7 +81,7 @@ export default {
                 },
                 {
                     title: 'Settings',
-                    permission: 'all',
+                    permission: [1],
                     icon: 'mdi-cog',
                     sub: [{
                         title: 'Users',
@@ -96,12 +97,19 @@ export default {
     computed: {
         userInfo() {
             return this.$store.state.userInfoLiveChat
+        },
+        filteredItems(){
+            return this.items.filter(rec=>{return !rec.permission ? rec :  rec.permission.includes(this.$store.state.userInfoLiveChat.IsAdmin)})
         }
     },
     created() {
 
     },
     methods: {
+        Edit(){
+            this.accountDialog = true
+            this.updateObj = this.userInfoLiveChat
+        },
         checkPrependZero() {
             return `http://adminsql1/photos/037758.jpg`
         },

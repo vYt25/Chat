@@ -1,6 +1,5 @@
 <template>
-<div class="overflow-hidden" >
-  
+<div class="overflow-hidden" >  
   <v-app id="inspire" class="foreground-color">
     <router-view  name="header" />    
     <v-main app>
@@ -11,10 +10,21 @@
 </template>
 <script>
     export default {
+      created(){
+        this.$bus.$on('Notification',(val)=>{
+          this.Notification(val)
+        })
+      },
       methods:{
-        GotoLogin(){
-          this.$router.push({name: 'Login'})
-        },
+        Notification({msg,from}){
+          this.$toast.success(msg, `${from} :`, {
+                    position: 'topRight',
+                    color: '#FFFFFF',
+                    icon: 'mdi mdi-chat-processing',
+                    progressBar: false,
+                    baloon: true
+                });
+        }
       }
     }
 </script>

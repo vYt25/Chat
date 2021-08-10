@@ -15,24 +15,21 @@ io.on('connection', (socket) => {
     })
 
     socket.on('disconnect', () => {
+        io.sockets.emit("offline", socket.id);
         delete users[socket.id];
-        io.sockets.emit("online", users);
     });
 
     socket.on('offline', (data) => {
+        io.sockets.emit("offline", socket.id);
         delete users[socket.id]
-        io.sockets.emit("online", users);
     })
 
-    socket.on('privateMsg', ({ msg, to }) => {
-        console.log('sent')
-        socket.to(to).emit("privateMsg", { msg, from: socket.id });
+    socket.on('privateMsg', ({ msg, to, data }) => {
+        socket.to(to).emit("privateMsg", { msg, from: socket.id, data });
     })
 
 });
 
 server.listen(PORT, function () {
-
     console.log(`Socket-server listening at ${PORT}`);
-
 });

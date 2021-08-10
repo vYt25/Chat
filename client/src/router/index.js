@@ -59,7 +59,7 @@ const routes = [
       default: () => import(/* webpackChunkName: "Users" */ '../views/Users.vue')
     },
     beforeEnter: (to, from, next) => {
-      if (!store.state.userInfoLiveChat.UserID) {
+      if (!store.state.userInfoLiveChat.UserID || store.state.userInfoLiveChat.IsAdmin != 1) {
         next('/')
       } else {
         next()

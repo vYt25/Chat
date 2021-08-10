@@ -17,8 +17,6 @@
                     <v-text-field class="my-2" label="First Name" outlined dense hide-details :color="$themeColor"  v-model="editObj.FirstName"></v-text-field>
                     <v-text-field class="my-2" label="Middle Name" outlined dense hide-details :color="$themeColor"  v-model="editObj.MiddleName"></v-text-field>
                     <v-text-field class="my-2" label="Last Name" outlined dense hide-details :color="$themeColor"  v-model="editObj.LastName"></v-text-field>
-                    <!-- <v-text-field class="my-1" outlined dense hide-details :color="$themeColor"></v-text-field> -->
-                    <!-- <v-text-field class="my-1" outlined dense hide-details :color="$themeColor"></v-text-field> -->
                     <v-select class="my-2" label="Gender" outlined dense hide-details :color="$themeColor" :item-color="$themeColor" :items="genders" item-text="GenderName" item-value="GenderID"  v-model="editObj.Gender"></v-select>
                     <v-btn dense block color="green lighten-2" :disabled="checkFields" @click="Update(editObj)">Update</v-btn>
                 </v-container>
